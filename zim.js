@@ -33080,6 +33080,7 @@ added, click, dblclick, mousedown, mouseout, mouseover, pressdown (ZIM), pressmo
 		}
 		that.points = points;
 
+    // more useable - Kyle
 		this.addNode = function(x, y, base) {
 			if (linear) return; // cannot add nodes in linear
 			return addNode(x, y);
@@ -33216,9 +33217,14 @@ added, click, dblclick, mousedown, mouseout, mouseover, pressdown (ZIM), pressmo
 			return theNode;
 
 		}
-
+    // more useable - Kyle
+		this.setNodes = function() {
+			return setNodes();
+		};
 		// that.added(function () {
 		function setNodes() {
+      zog('setNodes');
+
 			zim.loop(points, function (point) {
 				var node = addNode(point[0], point[1]);
 			});
@@ -33261,6 +33267,19 @@ added, click, dblclick, mousedown, mouseout, mouseover, pressdown (ZIM), pressmo
 		window.addEventListener("keydown", that.keyEvent);
 
 		// EVENT FUNCTIONS
+    // more useable - Kyle
+		this.holdNode = function(e) {
+			return holdNode(e);
+		};
+        
+    // more useable - Kyle
+		this.overNode = function(e) {
+			return overNode(e);
+		};    
+    // more useable - Kyle
+		this.outNode = function(e) {
+			return outNode(e);
+		};
 
 		function holdNode(e) {
 			var stage = e.target.stage;
@@ -33291,7 +33310,14 @@ added, click, dblclick, mousedown, mouseout, mouseover, pressdown (ZIM), pressmo
 
 		var downCount = 0;
 		var downID;
+    // more useable - Kyle
+    this.outNode = function(e) {
+      return outNode(e);
+      };
+
 		function downNode(e) {
+      zog('downNode',e, 'e.target = node', e.target);
+
 			var child = e.target;
 			if (!linear && (!rootLock || child.creator) && dblclick) {
 				if (downCount == 0) {
@@ -33384,8 +33410,14 @@ added, click, dblclick, mousedown, mouseout, mouseover, pressdown (ZIM), pressmo
 			parent.creations.push(child);
 
 		}
+    // more useable - Kyle
+    this.moveNode = function(e) {
+      return moveNode(e);
+      };
 
 		function moveNode(e) {
+      zog('upNode',e, 'e.target = node', e.target);
+
 			var node = e.target;
 			if (node.creatorLine) node.creatorLine.alp(1);
 			// if nodes are selected that are not this node being dragged
@@ -33405,10 +33437,15 @@ added, click, dblclick, mousedown, mouseout, mouseover, pressdown (ZIM), pressmo
 			}
 			that.stage.update();
 		}
+    // more useable - Kyle
+    this.upNode = function(e) {
+      return upNode(e);
+      };
 
 		function upNode(e) {
-
+      zog('upNode',e);
 			var node = e.target;
+
 
 			if (that.bases) {
 				zim.loop(that.bases, function (base) {
@@ -33578,6 +33615,7 @@ added, click, dblclick, mousedown, mouseout, mouseover, pressdown (ZIM), pressmo
 			base.connectorsOn = true;
 			base.stage.update();
 		}
+
 		function removeBaseColors(base) {
 			zim.loop(base.connectors, function (node) {
 				node.color = base.connectorColor;
